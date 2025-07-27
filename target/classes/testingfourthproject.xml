@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="test_deploymentFlow" doc:id="f05490cf-c06d-4f09-8378-d3e60cfaeee3" >
+		<scheduler doc:name="Scheduler" doc:id="30c7eb86-81fa-44af-bfc3-d51c5b0169a3" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="10" timeUnit="MINUTES" />
+			</scheduling-strategy>
+		</scheduler>
+		<set-variable value="12" doc:name="Set Variable" doc:id="a23d1c48-33ac-44a6-90c0-191d9430322d" variableName="num1"/>
+		<set-variable value="10" doc:name="Set Variable" doc:id="41786ba7-66c5-4ab6-b8e7-59c99133f177" variableName="num2"/>
+		<set-variable value="4" doc:name="Set Variable" doc:id="e677cf9f-a1d6-44c5-abf9-5f5a3f8531d9" variableName="num3"/>
+		<ee:transform doc:name="Transform Message" doc:id="45132e5a-0f2b-4af5-ad0e-96bbbd879182" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"addtion":(vars.num1 as Number) +(vars.num2 as Number) + (vars.num3 as Number),
+	"substraction": (vars.num1 as Number) - (vars.num2 as Number) -  (vars.num3 as Number),
+	"multiplication":(vars.num1 as Number) *(vars.num2 as Number) *  (vars.num3 as Number),
+	"division":(vars.num1 as Number)/(vars.num2 as Number) ,
+	"square of var1":(vars.num1 as Number) * (vars.num1 as Number)
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="aca4b69a-2c45-471b-ac12-caf1ae0fc021" message="took all the 3 vars of num1,numn2,num3 ::::::: #[payload] "/>
+	</flow>
+</mule>
